@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Deploy Stack</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+
+  <!-- Page Specific CSS -->
+  <link rel="stylesheet" href="../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" />
+  <link rel="stylesheet" href="../plugins/bpmn-js/assets/diagram-js.css" />
+  <link rel="stylesheet" href="../plugins/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
+
+<style>
+.running1:not(.djs-connection) .djs-visual > :nth-child(1) {
+  fill: aqua !important; /* color elements as green */
+}
+.running2:not(.djs-connection) .djs-visual > :nth-child(1) {
+  fill: gray !important; /* color elements as green */
+}
+.complete:not(.djs-connection) .djs-visual > :nth-child(1) {
+  fill: green !important; /* color elements as green */
+}
+</style>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="hold-transition skin-blue-light">
+<div class="wrapper">
+
+      <!-- Main content -->
+    <section class="content">
+    <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="project_name" class="col-sm-2 control-label">Name</label>
+
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="project_name" placeholder="Project name">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="zone_list" class="col-sm-2 control-label">Zone</label>
+
+            <div class="col-sm-10">
+                  <select class="form-control" id="zone_list">
+                  </select>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+          <div class="form-group">
+            <label for="tag_list" class="col-sm-1 control-label">Tags</label>
+
+            <div class="col-sm-11">
+	            <input type="text" class="pull-left" size=40 id="jeju-env" value="key1=value1,key2=value2" data-role="tagsinput" />	
+            </div>
+          </div>
+      </div>
+    </div>
+
+<hr>
+    <div class="row" style ='background-color: #ccffff;'>
+      <div class="row-md-12" id="bpmn_container">
+        <div id="bpmn"></div>
+      </div>
+    </div>
+
+    <div class="row" style ='background-color: #ccffff;'>
+      <div class="row-md-12" id="docker_compose">
+        <div id="docker_yml"></div>
+      </div>
+    </div>
+
+
+<hr>
+
+    <div class="row">
+      <div class="row-md-12" align="center">
+        <button id="launch-btn" class="btn btn-app">
+        <i class="fa fa-play"></i>
+        Launch</button>
+      </div>
+    </div>
+
+
+
+
+    </section>
+</div>
+
+
+<!-- ./wrapper -->
+
+<!-- jQuery 2.2.3 -->
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../dist/js/app.min.js"></script>
+<script type="text/javascript">
+    var token = "";
+    var user_id;
+    jQuery(function($) {
+        //initiate dataTables plugin
+        // about login
+        if (localStorage.getItem('token') !== null) {
+            token = localStorage.getItem('token');
+            console.log(token);
+        }
+        else {
+            window.location = "login.html"
+        }
+        user_id = localStorage.getItem('user_id');
+        $('#logout').click(function() {
+            localStorage.removeItem('token');
+            window.location = "login.html?target=deploy_stack.html";
+        });
+        if(token) {}
+        else {window.location = "login.html?target=deploy_stack.html"}
+        console.log(token);
+        var user_name = $.ajax({
+            type: "GET",
+            headers: {'X-Auth-Token':token},
+            url: "/api/v1".concat("/users/").concat(user_id),
+            contentType: "application/json",
+            success: function(resultData) {
+                console.log(resultData);
+                $('#user-name').text(resultData.user_id);
+                $('#created').text(resultData.created);
+                $('#u-username').text(resultData.name);
+                $('#u-userid').text(resultData.user_id);
+                $('#u-email').text(resultData.email);
+                $('#u-language').text(resultData.language);
+                $('#u-timezone').text(resultData.timezone);
+                $('#u-state').text(resultData.state);
+                $('#u-created').text(resultData.created);
+
+            },
+            error: function() {
+                window.location = "login.html?target=deploy_stack.html";
+            },
+        });
+        // end of login
+    });
+</script>
+
+<!-- Page Specific App -->
+<script src="../plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+<script src="../plugins/url/url.min.js"></script>
+<script src="../plugins/bpmn-js/bpmn-viewer.js"></script>
+<script src="../dist/js/pages/deploy_stack.js"></script>
+</body>
+</html>
