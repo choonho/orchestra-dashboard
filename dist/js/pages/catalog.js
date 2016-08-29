@@ -186,5 +186,32 @@ jQuery(document).ready(function () {
         }
   });
 
+
+  $('#btn-create-catalog').on('click', function() {
+    $('#create-catalog').show();
+  });
+
+  $('#catalog-ok').on('click', function() {
+    var catalog_url = $('#catalog-url').val();
+    $.ajax({
+        url : '/api/v1/catalog',
+        headers: {
+            'X-Auth-Token' : token
+        },
+        contentType: 'application/json',
+        type: 'POST',
+        data: JSON.stringify({url:catalog_url}),
+        success: function(data) {
+          $('#create-catalog').hide();
+        }
+    });
+ 
+  });
+
+  $('#catalog-close').on('click', function() {
+    $('#create-catalog').hide();
+  });
+
+
 });
 

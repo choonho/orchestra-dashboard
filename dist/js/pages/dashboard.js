@@ -100,7 +100,7 @@ jQuery(document).ready(function () {
   function getStacks() {
 
     $.ajax({
-      url: '/api/v1/catalog/stacks?state=running',
+      url: '/api/v1/catalog/stacks?detail',
       headers: {
         'X-Auth-Token': token
       },
@@ -109,6 +109,29 @@ jQuery(document).ready(function () {
       success: function(data) {
         console.log(data);
         $('#num_stacks').text(data.total_count);
+        // Draw Stack Network
+        var stacks = []
+        var links = []
+        for(i = 0; i < data.total_count; i++) {
+          stacks.push({id:i, label: data.results[i].name, shape: 'icon', icon: {face: 'FontAwesome', color: 'red', code:'\uf0c2',size:60}});
+          for(j in data.results[i].detail.server_names) {
+            stacks.push({id:i*100+j, label: data.results[i].detail.server_names[j], shape: 'icon', icon: {face: 'FontAwesome', code:'\uf069', size:25}});
+            links.push({from:i*100+j, to:i});
+          }                
+        }
+        var nodes = new vis.DataSet(stacks);
+        var edges = new vis.DataSet(links);
+        var container = document.getElementById('mystack');
+        var sdata = {
+          nodes: nodes,
+          edges: edges
+        };
+        var options = {
+          autoResize: true,
+          height: '300',
+          width: '100%'
+        };
+        var network = new vis.Network(container, sdata, options);
       }
     });
   }; 

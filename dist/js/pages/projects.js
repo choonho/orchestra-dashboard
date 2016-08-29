@@ -5,9 +5,9 @@ jQuery(document).ready(function () {
   var server_dic = {};
   var server_table = {};
   var project_list = [];
-  var action_dic = {'Start Project':'#action-start',
+  var action_project = {'Start Project':'#action-start',
                     'Stop Project':'#action-stop',
-                    'Delete Project':'#action-delete'}
+                    'Delete Project':'#delete-project'}
   var temp_name;
   var temp_id;
   var table;
@@ -15,7 +15,7 @@ jQuery(document).ready(function () {
   var selected_zone;
 
 
-  for (var action in action_dic) {
+  for (var action in action_project) {
     $('<li><a href="#">' + action + '</a></li>').appendTo('#action-project');
   }
 
@@ -103,6 +103,42 @@ jQuery(document).ready(function () {
       }); 
   return project_list;
   } // End of listProjects
+
+  function deleteStacks(nodes) {
+    console.log(nodes);
+    for(var i in nodes) {
+      console.log("delete stacks:".concat(nodes[i]));
+      $.ajax({
+          url : '/api/v1/catalog/stacks/'.concat(nodes[i]),
+          headers: {
+              'X-Auth-Token' : token
+          },
+          contentType: 'application/json',
+          type: 'DELETE',
+          success: function(data) {
+            console.log(data);
+          }
+      }); 
+   
+    }
+  } // End of deleteServers
+
+  $(document).on('click', '#action-project li a', function() {
+    var selText = $(this).text();
+    console.log(selText);
+    $(action_project[selText]).modal('show');
+    selected_nodes = listSelectedTable();
+    console.log(selected_nodes);
+  });
+
+  $('#btn-del-project').click(function() {
+    deleteStacks(selected_nodes);
+    selected_nodes = [];
+    $('#delete-project').modal('hide');
+    listStacks(selected_zone);
+    updateTable(project_list);
+  });
+
 
   listProjects();
 });

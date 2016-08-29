@@ -186,12 +186,12 @@
             <i class="fa fa-dashboard"></i>Dashboard
           </a>
         </li>
-        <li>
+        <li class="active">
           <a href="projects.html">
             <i class="fa fa-tasks"></i> <span>Projects</span>
           </a>
         </li>
-        <li class="active">
+        <li>
           <a href="resources.html">
             <i class="fa fa-th"></i> <span>Resources</span>
           </a>
@@ -223,6 +223,15 @@
 
     <!-- Main content -->
     <section class="content">
+  <div class="row">
+  <div class="col-md-6">
+        <div class="btn-group pull-left">
+          <button type="button" class="btn btn-block btn-danger" id="btn-create-catalog"><b>+</b> Create New Catalog</button>
+        </div>
+  </div>
+  </div>
+<hr>
+
 
 <div class="row">
   <div class="col-xs-3">
@@ -295,6 +304,39 @@ Deploy</button>
 
 </div>
 <!-- ./wrapper -->
+
+<!-- Modal -->
+<div class="modal" id="create-catalog">
+  <div class="modal-dialog">
+    <div class="box box-info">
+    <div class="box-header with-border">
+      <h3 class="box-title">Input Catalog URL</h3>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    <form class="form-horizontal">
+      <div class="box-body">
+        <div class="form-group">
+          <div class="col-sm-12">
+            <input type="text" class="form-control" id="catalog-url" placeholder="https://github.com/bocabaton/orchestra-books/tree/master/{CATALOG NAME}">
+          </div>
+        </div>
+ 
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer">
+        <button type="button" class="btn btn-default" id="catalog-close">Cancel</button>
+        <button type="submit" class="btn btn-info pull-right" id="catalog-ok">Create</button>
+      </div>
+      <!-- /.box-footer -->
+    </form>
+  </div>
+  <!-- /.box --> 
+  <!-- /.modal-dialog -->
+</div>
+</div>
+<!-- End of Delete Servers Modal -->
+
 
 <!-- jQuery 2.2.3 -->
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>

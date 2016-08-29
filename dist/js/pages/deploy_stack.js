@@ -7,6 +7,8 @@ jQuery(document).ready(function () {
     if(window.XDomainRequest)
         contentType = "text/plain";
 
+    // Intial
+    $("#loading").hide();
 
     //$('#stackDeploy').modal('modal-body').css({'height': '600px'})
     // TODO: clean before create
@@ -92,15 +94,18 @@ catch(e) {
 $( "#launch-btn" ).click(function() {
     var env = $("#jeju-env").tagsinput("items");
     console.log(env);
+    // Change to loading
+    $('#loading').show();
     var env2 = {}
     for (var i in env) {
         var res = env[i].split("=");
         env2[res[0]] = res[1];
     }
     var name = $("#project_name").val();
-    var zone_id = zone_dic[$("zone_list option:selected").val()];
+    var zone_id = $('#zone_list option:selected').val();
     env2['COMPOSE_PROJECT_NAME'] = name;
     env2['ZONE_ID'] = zone_id;
+    console.log("Seleted Zone".concat(zone_id));
     env2['TOKEN'] = token;
     $.ajax({
         type: "POST",
@@ -186,15 +191,9 @@ function listZones() {
         url: '/api/v1/provisioning/zones',
         contentType: 'application/json',
         success: function(result) {
-          console.log(result);
-          var opt_str="";
           for(var i in result.results) {
-            zone_dic[result.results[i].name] = result.results[i].zone_id;
-            opt_str = opt_str.concat("<option>").concat(result.results[i].name).concat("</option>");
+            $('#zone_list').append('<option value="' + result.results[i].zone_id + '">' + result.results[i].name + '</option>');
           }
-          // Update zone_list
-          $('#zone_list').html(opt_str);
-          console.log(opt_str);
         }
     });
 }
