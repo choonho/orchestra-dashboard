@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Projects</title>
+  <title>Workspaces</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -21,7 +21,9 @@
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
 
   <!-- Page Specific CSS -->
-  <link rel="stylesheet" href="../plugins/datatables/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="../plugins/bpmn-js/assets/diagram-js.css" />
+  <link rel="stylesheet" href="../plugins/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
+
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -185,7 +187,7 @@
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
-        <li class="active">
+        <li>
           <a href="projects.html">
             <i class="fa fa-tasks"></i> <span>Projects</span>
           </a>
@@ -195,12 +197,11 @@
             <i class="fa fa-th"></i> <span>Resources</span>
           </a>
         </li>
-        <li>
+        <li class="active">
           <a href="workspaces.html">
             <i class="fa fa-cubes"></i> <span>Workspaces</span>
           </a>
         </li>
-
         <li>
           <a href="accounts.html">
             <i class="fa fa-users"></i> <span>Accounts</span>
@@ -217,12 +218,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Projects
+        Workspaces
         <small>Version 1.0</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Projects</li>
+        <li class="active">Workspaces</li>
       </ol>
     </section>
 
@@ -232,7 +233,7 @@
 <div class="row">
   <div class="col-md-6">
         <div class="btn-group pull-left">
-            <a href="catalog.html" class="btn btn-block btn-danger" id="create-project"><b>+</b> Load New Project</a>
+            <a href="catalog.html" class="btn btn-block btn-danger" id="create-workflow"><b>+</b> Save as New Workflow</a>
         </div>
   </div>
 
@@ -253,20 +254,9 @@
 <hr>
 
 <div class="row">
-  <div class="col-xs-12">
-    <table id="projectTable" class="display table table-bordered table-hover" cellspacing="0" width="100%">
-      <thead>
-        <tr>
-          <th><input name="select_all" value="1" id="server-select-all" type="checkbox" /></th>
-          <th>Name</th>
-          <th>ID</th>
-          <th>Product</th>
-          <th># of Instances</th>
-          <th>URL</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-    </table>
+  <div class="col-md-12" style="background-color:white; " >
+    <div class="canvas" id="canvas" />
+    </div>
   </div>
 </div> <!-- End of row -->
 
@@ -286,38 +276,42 @@
 </div>
 
 
-<!-- Modal -->
-<div class="modal" id="delete-project">
-  <div class="modal-dialog">
-    <div class="box box-info">
-    <div class="box-header with-border">
-      <h3 class="box-title">Delete Project</h3>
+                <!-- POPUP service -->
+                <div id="draggable" 
+                style="position:absolute; 
+                top:50px; 
+                left:100px; 
+                z-index:1; 
+                visibility:hidden; 
+                background-color:white;
+padding:10px;border:10px solid yellowgreen;
+                ">
+  <div class="row">
+    <div class="col-md-12">
+                <b><label id="task_name"></label></b><br>
     </div>
-    <!-- /.box-header -->
-    <!-- form start -->
-    <form class="form-horizontal">
-      <div class="box-body">
-      </div>
-      <!-- /.box-body -->
-      <div class="box-footer">
-        <button type="button" class="btn btn-default" id="delete-close">Cancel</button>
-        <button type="submit" class="btn btn-info pull-right" id="btn-del-project">Delete</button>
-      </div>
-      <!-- /.box-footer -->
-    </form>
   </div>
-  <!-- /.box --> 
-  <!-- /.modal-dialog -->
-</div>
-</div>
-<!-- End of Delete Servers Modal -->
-
-
+  <div class="row">
+    <div class="col-md-12">
+                <div class="epiceditor_container">
+                <div id="epiceditor"></div>
+                </div>
+    </div>
+  </div>
+  <div class="row">
+  <hr>
+    <div class="col-md-12">
+                <button type="reset" class="pull-left" id="close">Close</button>
+                <button type="submit" class="pull-right" id="saveTask">Save</button>
+    </div>
+  </div>
+                </div>
 
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="../plugins/jQueryUI/jquery-ui.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- FastClick -->
@@ -363,7 +357,8 @@
 </script>
 
 <!-- Page Specific App -->
-<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="../dist/js/pages/projects.js"></script>
+<script src="../plugins/bpmn-js/bpmn-modeler.js"></script>
+<script src="../plugins/epiceditor/epiceditor.js"></script>
+<script src="../dist/js/pages/workspaces.js"></script>
 </body>
 </html>

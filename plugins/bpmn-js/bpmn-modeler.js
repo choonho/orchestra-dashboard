@@ -2918,7 +2918,7 @@ ContextPadProvider.prototype.getContextPadEntries = function(element) {
 
     layer.style.left = _x+"px"; 
     layer.style.top = _y+"px"; 
-    $("draggable").show();
+    $("#draggable").show();
     layer.style.visibility="visible"; 
   }
 
@@ -3187,7 +3187,7 @@ ContextPadProvider.prototype.getContextPadEntries = function(element) {
   }
   
   // Edit Docker information
-  if (isAny(businessObject, [ 'bpmn:ServiceTask' ])) {
+  if (isAny(businessObject, [ 'bpmn:Task' ])) {
     assign(actions, {
       'deploy': {
         group: 'edit',
