@@ -3,7 +3,6 @@ jQuery(document).ready(function () {
   var form_actions = {'Add AWS Account':'#form-aws',
     'Add OpenStack Account':'#form-openstack',
     'Add Baremetal Account':'#form-baremetal',
-    'Add Joyent Account':'#form-joyent',
     'Add Keypair':'#form-keypair'};
 
   // Action Menu
