@@ -136,11 +136,10 @@ jQuery(document).ready(function () {
         contentType: 'application/json',
         type: 'GET',
         success: function(data) {
-            if (data.total_count == 0) {
-              console.log('wizard');
-              $('#discover-regions').modal('show');
-
-            }
+            //if (data.total_count == 0) {
+            //  console.log('wizard');
+            //  $('#discover-regions').modal('show');
+            //}
             for(i = 0; i < data.total_count; i++) {
                 var tree2 = [];
                 $.ajax({
